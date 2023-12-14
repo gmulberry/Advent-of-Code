@@ -42,6 +42,34 @@ int findNode(std::string nodeName, const std::vector<node> &nodes)
     return nodeNum;
 }
 
+unsigned long long gcd(unsigned long long a, unsigned long long b)
+{
+    while (b != 0)
+    {
+        unsigned long long temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+unsigned long long lcm(unsigned long long a, unsigned long long b)
+{
+    return (a * b) / gcd(a, b);
+}
+
+unsigned long long lcmVector(const std::vector<int> &numbers)
+{
+    unsigned long long result = numbers[0];
+
+    for (size_t i = 1; i < numbers.size(); ++i)
+    {
+        result = lcm(result, numbers[i]);
+    }
+
+    return result;
+}
+
 int main()
 {
     std::cout << "AoC 2023 Day 8" << std::endl;
@@ -98,5 +126,42 @@ int main()
     }
 
     std::cout << "Part 1: " << steps << std::endl;
+
+    // Part 2
+    std::vector<std::string> startingNodes;
+    std::vector<int> stepsForEach;
+    for (int i = 0; i < nodes.size(); i++)
+        if (nodes[i].name[2] == 'A')
+            startingNodes.push_back(nodes[i].name);
+
+    for (int i = 0; i < startingNodes.size(); i++)
+    {
+        steps = -1;
+        directionIdx = 0;
+        lookingFor = startingNodes[i];
+        found = false;
+        while (!found)
+        {
+            nodePos = findNode(lookingFor, nodes);
+
+            if (directions[directionIdx] == 'R')
+                lookingFor = nodes[nodePos].right;
+            else
+                lookingFor = nodes[nodePos].left;
+
+            if (directionIdx < directions.length() - 1)
+                directionIdx++;
+            else
+                directionIdx = 0;
+
+            if (nodes[nodePos].name[2] == 'Z')
+                found = true;
+
+            steps++;
+        }
+        stepsForEach.push_back(steps);
+    }
+    std::cout << "Part 2: " << lcmVector(stepsForEach) << std::endl;
+
     return 0;
 }
