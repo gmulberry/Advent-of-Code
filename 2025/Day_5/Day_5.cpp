@@ -65,7 +65,7 @@ unsigned long long sumRanges(std::vector<range> &in){
 
 int main()
 {
-    std::cout << "AoC 2025 Day 2" << std::endl;
+    std::cout << "AoC 2025 Day 5" << std::endl;
     std::string fileName = "input.txt";
     // std::string fileName = "example.txt";
 
